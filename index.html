@@ -177,11 +177,26 @@
         // create the dataLayer variable, to be populated in the $.getJSON object below, and create global                      variables for the vacant units 
         var dataLayer,
             attribute = "2014AAI";
-                    
-        // JQuery AJAX call to retrieve the js data from the file listed
-        $.getJSON("ky_counties_2014_household-median-incomes.geojson", function(data) {
+        
+        omnivore.csv('KY_Schools-V1.csv')
+            .on('ready', function(e) {
+                                       
+                // JQuery AJAX call to retrieve the js data from the file listed
+                $.getJSON("ky_counties_2014_household-median-incomes.geojson", function(data) {
+
+                    // pass the two datasets to drawMap function
+                    drawMap(data, e.target.toGeoJSON());
+   
+                });
             
-            // populate the dataLayer with county data and style the underlay
+            
+            })
+            .on('error', function(e) {
+                console.log(e.error[0].message);
+        });
+
+        function drawMap(data,incomes) {
+                     // populate the dataLayer with county data and style the underlay
             dataLayer = L.geoJson(data, {
                  style: function(feature) {
                     return {
@@ -192,23 +207,16 @@
                         };
                 }          
             }).addTo(map); //now add the AJAX call to the map
-            
+
             drawLegend(); // create the drawLegend box, to be filled by updateLegend()
-            
-            drawMap(); // draws the choropleth map
-            
+
+            updateMap(); // draws the choropleth map
+
             drawInfo(); // sets up the upper-right box, but updateInfo() populates it
-            
-              
-        });
-        
-        omnivore.csv('KY_Schools-V1.csv')
-            .on('ready', function(e) {
-                drawSchools(e.target.toGeoJSON());
-            })
-            .on('error', function(e) {
-                console.log(e.error[0].message);
-        });
+
+            drawSchools(incomes);
+        }
+
 
         function drawSchools(data) {
             
@@ -271,7 +279,7 @@
 //        }
 
         // This function draws the choropleth over the initial AJAX call
-        function drawMap() {
+        function updateMap() {
             
             // create a variable to hold the 7 class breaks
             var breaks = getClassBreaks();
