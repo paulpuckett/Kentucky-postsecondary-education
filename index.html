@@ -176,6 +176,7 @@
         
         // create the dataLayer variable, to be populated in the $.getJSON object below, and create global                      variables for the vacant units 
         var dataLayer,
+            schoolsLayer = L.layerGroup(),
             attribute = "2014AAI";
         
         omnivore.csv('KY_Schools-V1.csv')
@@ -222,6 +223,8 @@
             
             console.log(data.features);
             
+            schoolsLayer.addTo(map);
+            
             var enrollment = L.geoJson(data, {
 
                 pointToLayer: function(feature, latlng) {
@@ -234,7 +237,7 @@
 //                        radius: Math.sqrt(((layer.data.properties.enrollment)/Math.PI)*6)
                     });
                 }
-            }).addTo(map);
+            }).addTo(schoolsLayer);
             
             var tuition = L.geoJson(data, {
 
@@ -248,7 +251,7 @@
                         radius: 20
                     });
                 }
-            }).addTo(map);
+            }).addTo(schoolsLayer);
             
 //            updateSymbols(enrollment, tuition);
         }
