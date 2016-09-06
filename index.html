@@ -250,6 +250,11 @@
                         fillOpacity: 0,
                         radius: 20
                     });
+                },
+                onEachFeature : function(feature,layer) {
+                    layer.on('mouseover', function() {
+                        console.log(feature)
+                    })
                 }
             }).addTo(schoolsLayer);
             
@@ -308,7 +313,8 @@
                     updateInfo(this);
                     
                     // pushes a red county stroke color to whatever county is moused over
-                    layer.setStyle({color: 'red'}).bringToFront();
+                    layer.setStyle({color: 'red'});
+                        //.bringToFront();
                 });
                 
                 // returns the stroke color to gray when mouse leaves the county                
