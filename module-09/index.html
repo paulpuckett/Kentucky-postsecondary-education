@@ -176,11 +176,27 @@
         
         // create the dataLayer variable, to be populated in the $.getJSON object below, and create global                      variables for the vacant units 
         var dataLayer,
+            schoolsLayer = L.layerGroup(),
             attribute = "2014AAI";
-                    
-        // JQuery AJAX call to retrieve the js data from the file listed
-        $.getJSON("ky_counties_2014_household-median-incomes.geojson", function(data) {
+
+        omnivore.csv('KY_Schools-V3.csv')
+            .on('ready', function(e) {
             
+                // JQuery AJAX call to retrieve the js data from the file listed
+                $.getJSON("ky_counties_2014_household-median-incomes.geojson", function(data) {
+                    
+                    // pass the two datasets to drawMap function
+                    
+                    drawMap(data, e.target.toGeoJSON());
+                    
+                });
+            
+        })
+        .on('error', function(e) {
+            console.log(e.error[0].message);
+        });
+        
+        function drawMap(data, incomes) {
             // populate the dataLayer with county data and style the underlay
             dataLayer = L.geoJson(data, {
                  style: function(feature) {
@@ -194,27 +210,22 @@
             }).addTo(map); //now add the AJAX call to the map
             
             drawLegend(); // create the drawLegend box, to be filled by updateLegend()
-            
-            drawMap(); // draws the choropleth map
+
+            updateMap(); // draws the choropleth map
             
             drawInfo(); // sets up the upper-right box, but updateInfo() populates it
             
-              
-        });
-        
-        omnivore.csv('KY_Schools-V1.csv')
-            .on('ready', function(e) {
-                drawSchools(e.target.toGeoJSON());
-            })
-            .on('error', function(e) {
-                console.log(e.error[0].message);
-        });
-
-        function drawSchools(data) {
+            drawSchools(incomes);
             
+        }
+        
+        function drawSchools(data) {
+                        
             console.log(data.features);
             
-            var enrollment = L.geoJson(data, {
+            schoolsLayer.addTo(map);
+            
+            var publicSchools = L.geoJson(data, {
 
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -223,31 +234,36 @@
                         opacity: 1,
                         weight: 2,
                         fillOpacity: 0,
-//                        radius: Math.sqrt(((layer.data.properties.enrollment)/Math.PI)*6)
+                        radius: calcRadius(feature.properties.TUITIONINSTATE)
                     });
                 }
-            }).addTo(map);
+            }).addTo(schoolsLayer);
             
             var tuition = L.geoJson(data, {
 
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, {
-                        color: 'red',
-                        fillcolor: 'red',
+                        color: 'yellow',
+                        fillcolor: 'yellow',
                         opacity: 1,
-                        weight: 2,
-                        fillOpacity: 0,
-                        radius: 20
+                        weight: 3,
+                        fillOpacity: .1,
+                        radius: calcRadius(feature.properties.TUITIONINSTATE)
                     });
+                },
+                onEachFeature : function(feature, layer) {
+                    layer.on('mouseover', function() {
+//                        console.log(feature.properties.ADDRESS)
+                    })
                 }
-            }).addTo(map);
+            }).addTo(schoolsLayer);
             
 //            updateSymbols(enrollment, tuition);
         }
         
         function calcRadius(val) {
             var radius = Math.sqrt(val/Math.PI);
-            return radius * .6;
+            return radius * .2;
         }
         
 //        function updateSymbols(enrollment, tuition) {
@@ -271,7 +287,7 @@
 //        }
 
         // This function draws the choropleth over the initial AJAX call
-        function drawMap() {
+        function updateMap() {
             
             // create a variable to hold the 7 class breaks
             var breaks = getClassBreaks();
@@ -297,7 +313,8 @@
                     updateInfo(this);
                     
                     // pushes a red county stroke color to whatever county is moused over
-                    layer.setStyle({color: 'red'}).bringToFront();
+                    layer.setStyle({color: 'red'});
+                        //.bringToFront();
                 });
                 
                 // returns the stroke color to gray when mouse leaves the county                
