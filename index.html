@@ -28,30 +28,29 @@
             margin: 10px auto 10px auto;
         }
         h1 {
-            display: inline-block;
             margin-right: 20px;
             color: #001323;
+            font-size: 1.5em;
         }
         h2 {
-            display: inline-block;
             color: #001323;
+            font-size: 1.2em;
         }
         #map {
             position:absolute;
             top:0;
             bottom:0;
-            right: 0;
+            left: 0;
             width: 67%;
-/*            margin: 10px 10%;*/
             background: whitesmoke;
-            border: 2px solid #dddedf;
+            border-left: 2px solid #dddedf;
         }
         footer {
             padding: 6px 10%;
             width: 80%;
         }
         p {
-            font-size: 1em;
+            font-size: .9em;
             color: #001323;
         }
         .legend {
@@ -84,27 +83,41 @@
         .leaflet-popup-content {
             max-width: 160px;   
         }
-        #upper-left-panel {
+        .panel {
             position: absolute;
-            left: 0;
-            top: 0;
+            right: 0;
             height: 50%;
-            width: 33%;
+            width: 30%;
             background: whitesmoke;
-/*            border: 2px solid #1C9976;*/
+            padding: 0 20px 0 20px;
             overflow-y: scroll;
         }
-        #lower-left-panel {
-            position: absolute;
-            left: 0;
+        .upper-left-panel {
+            top: 0;    
+        }
+        .lower-left-panel {
             bottom: 0;
-            height: 50%;
-            width: 33%;
-            background: whitesmoke;
-/*            border: 2px solid #1C9976;*/
-            overflow-y: scroll;
         }
-        
+        .panel p {
+            font-weight: lighter;
+            line-height: 1.5em;
+        }
+        .panel ul {
+            margin-left: 0;
+            padding-left: 20px;
+            font-size: .9em;
+        }
+        .panel li {
+           
+        }
+        .panel a {
+            text-decoration: none;
+            color: green;
+        }
+        .panel a:hover {
+            text-decoration: underline;
+        }
+     
         
     </style>
 </head>
@@ -119,9 +132,8 @@
 
     <div id='map'></div>
     
-    <div id='upper-left-panel'>
+    <div class='panel upper-left-panel'>
         <h1>Income and the Price of Education</h1>
-        <h2>Background</h2>
         <p>The idea of higher education in America has evolved over time. Early American colleges such as Harvard and Yale were established initially to teach and train clergy. In the mid-eighteenth century Benjamin Franklin proposed a school in Philadelphia (later to become the University of Pennsylvania), described and endorsed by Samuel Johnson of King's College (now Columbia University), that would teach, "the arts of numbering and measuring; of Surveying and Navigation, of Geography and History, of Husbandry, Commerce and Government, and in the Knowledge of all nature in the Heavens above us, and in the Air, Earth, and Water around us, and the various kinds of Meteors, Stones, Mines and Minerals, Plants and Animals, and of Every Thing useful for the comfort, convenience and Elegance of Life, in the chief Manufactures relating to any of these Things". </p>
         <p>This approach to what was referred to in the eighteenth century as 'useful knowledge' was not fully realized until the Morrill Acts of 1862 and 1890 which required schools that received its land grants to teach the "mechanical and agricultural arts" as well as establish ROTC training. In Kentucky, the University of Kentucky and Kentucky State University are the results of these acts</p>
         <p>In the twentieth century 'normal schools' which began as teachers colleges evolved into additional public schools such as Murray State University and Morehead State University</p>
@@ -133,18 +145,16 @@
     
     </div>    
 
-    <div id='lower-left-panel'>
-        <h1>Recent Education News</h1>
-        <h2>Click Link for Story</h2>
-        <p><a href="http://www.kentucky.com/news/state/kentucky/article97546582.html" target="_blank">Eastern Kentucky University considers cutting programs</a></p>
-        <p><a href="http://www.midway.edu/2016/05/16/midway-university-trustees-vote-accept-men-daytime-undergraduate-programs/" target="_blank">Midway University Trustees vote to accept men into its daytime undergraduate programs</a></p>
-        <p><a href="https://www.insidehighered.com/news/2016/06/20/southern-accreditor-puts-five-colleges-probation" target="_blank">Accreditor Puts 5 Colleges On Probation</a></p>
-        <p><a href="http://www.wdrb.com/story/32112881/st-catharine-college-closing-due-to-low-enrollment-and-debt-obligations2" target="_blank">St. Catherine's closing due to low enrollment and debt obligations</a></p>
-        <p><a href="http://www.courier-journal.com/picture-gallery/news/2015/04/09/gallery--spalding-universitys-43rd-running-of-the-rodents/25524677/" target="_blank">Spalding University's 43rd Annual Running of the Rodents</a></p>
-        <p><a href="http://www.kentucky.com/news/local/education/article97588577.html" target="_blank">Troubled MedTech College cancels classes in Lexington</a></p>
-        
-        
-    
+    <div class='panel lower-left-panel'>
+        <h2>Recent Education News</h2>
+        <ul>
+            <li><a href="http://www.kentucky.com/news/state/kentucky/article97546582.html" target="_blank">Eastern Kentucky University considers cutting programs</a></li>
+            <li><a href="http://www.midway.edu/2016/05/16/midway-university-trustees-vote-accept-men-daytime-undergraduate-programs/" target="_blank">Midway University Trustees vote to accept men into its daytime undergraduate programs</a></li>
+            <li><a href="https://www.insidehighered.com/news/2016/06/20/southern-accreditor-puts-five-colleges-probation" target="_blank">Accreditor Puts 5 Colleges On Probation</a></li>
+            <li><a href="http://www.wdrb.com/story/32112881/st-catharine-college-closing-due-to-low-enrollment-and-debt-obligations2" target="_blank">St. Catherine's closing due to low enrollment and debt obligations</a></li>
+            <li><a href="http://www.courier-journal.com/picture-gallery/news/2015/04/09/gallery--spalding-universitys-43rd-running-of-the-rodents/25524677/" target="_blank">Spalding University's 43rd Annual Running of the Rodents</a></li>
+            <li><a href="http://www.kentucky.com/news/local/education/article97588577.html" target="_blank">Troubled MedTech College cancels classes in Lexington</a></li> 
+        </ul>
     </div>    
 <!--
     <footer>
@@ -158,7 +168,7 @@
         
         // create labels to be shown in the legend
         var labels = {
-            "2014AAI": "2014 Median Household Income"
+            "2014AAI": "Kentcuky 2014 Median<br> Household Income"
         }
         
         // set up options for the map (NO ZOOM FOR YOU!)
